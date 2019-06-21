@@ -10,3 +10,4 @@ add_library(
 )
 
 target_link_libraries(MiaoVideoFormat Miao)
+target_link_libraries(MiaoVideoFormat avformat)

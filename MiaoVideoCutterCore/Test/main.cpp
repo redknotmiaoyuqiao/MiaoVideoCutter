@@ -4,17 +4,26 @@
 
 int main()
 {
-    MiaoFormatOutput formatOutput((char *)"c://a.h264");
-    formatOutput.Open();
-    formatOutput.Close();
+    MiaoAVLoader miaoavloader((char *)"/home/redknot/demo.mp4");
+    miaoavloader.Open();
 
-    MiaoAVLoader miaoavloader((char *)"c://b");
-    
-    
+    int streamNum = miaoavloader.GetStreamsNum();
+    printf("Stream Num : %d\n", streamNum);
+
+    for(int i=0;i<streamNum;i++){
+        miaoavloader.GetExtradata(i);
+    }
+
+    /* 
+    while(1){
+        int ret = miaoavloader.ReadFrame();
+        if(ret){
+            break;
+        }
+    }
+    */
 
     printf("Test!!!\n");
-
-	system("pause");
 
     return 0;
 }
