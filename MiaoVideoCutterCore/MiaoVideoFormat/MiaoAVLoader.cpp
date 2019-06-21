@@ -1,5 +1,6 @@
 #include "MiaoVideoFormat.hpp"
 #include "MiaoBase/Miao.hpp"
+#include "MiaoVideoFormat/MiaoExtradata.hpp"
 
 MiaoAVLoader::MiaoAVLoader(char * filePath)
 {
@@ -13,6 +14,8 @@ MiaoAVLoader::~MiaoAVLoader()
         free(this->filePath);
         this->filePath = NULL;
     }
+
+	Close();
 }
 
 int MiaoAVLoader::Open()
@@ -52,37 +55,14 @@ int MiaoAVLoader::GetExtradata(int streamIndex)
     if(ret){
         return -1;
     }
+	
+	MiaoExtradata * miao = MiaoExtradataFactory::GetMiaoExtradata(type, codec);
+	if (miao != NULL) {
+		ret = miao->GetExtradata(avstream->codec->extradata, avstream->codec->extradata_size, NULL, NULL);
+		delete miao;
+	}
 
-    if(type == STREAM_TYPE_VIDEO){
-        if(codec == STREAM_CODEC_H264){
-            // Get Sps and PPS
-            int spsLength = avstream->codec->extradata[6] * 0xFF + avstream->codec->extradata[7];  
-            int ppsLength = avstream->codec->extradata[8 + spsLength + 1] * 0xFF + avstream->codec->extradata[8 + spsLength + 2];
-
-            uint8_t * sps = (uint8_t *)malloc(spsLength * sizeof(char));
-            uint8_t * pps = (uint8_t *)malloc(ppsLength * sizeof(char));
-
-            printf("SpsLen:%d\n",spsLength);
-            printf("PPSLen:%d\n",ppsLength);
-            for (int i=0;i<spsLength;i++)  
-            {  
-                sps[i] = avstream->codec->extradata[i + 8];
-            }
-            
-            for (int i=0;i<ppsLength;i++)  
-            {  
-                pps[i] = avstream->codec->extradata[i + 8 + 2 + 1 + spsLength];
-            }
-
-            printf("Sps Type:%d\n", sps[0] & 31);
-            printf("Pps Type:%d\n", pps[0] & 31);
-
-            free(sps);
-            free(pps);
-        }
-    }
-
-    return 0;
+    return ret;
 }
 
 int MiaoAVLoader::GetStreamsTypeCodec(int streamIndex, int * type, int * codec)
@@ -125,4 +105,16 @@ int MiaoAVLoader::ReadFrame()
     }
 
     return ret;
+}
+
+int MiaoAVLoader::Close()
+{
+	avformat_close_input(&pFormatCtx);
+
+	if(pFormatCtx != NULL){
+		avformat_free_context(pFormatCtx);
+		pFormatCtx = NULL;
+	}
+	
+	return 0;
 }

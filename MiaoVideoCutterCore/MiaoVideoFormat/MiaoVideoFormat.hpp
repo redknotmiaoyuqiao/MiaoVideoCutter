@@ -85,6 +85,8 @@ public:
     int GetExtradata(int streamIndex);
     
     int ReadFrame();
+
+	int Close();
 };
 
 
