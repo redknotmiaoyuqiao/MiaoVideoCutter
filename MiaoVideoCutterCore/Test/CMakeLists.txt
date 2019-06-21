@@ -6,4 +6,4 @@ add_executable(
     main.cpp   
 )
 
-# target_link_libraries(Test pthread)
+target_link_libraries(Test MiaoVideoFormat)

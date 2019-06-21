@@ -13,4 +13,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")
 
 ADD_SUBDIRECTORY(Test)
+ADD_SUBDIRECTORY(MiaoVideoFormat)
 
