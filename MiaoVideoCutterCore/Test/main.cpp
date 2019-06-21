@@ -8,6 +8,13 @@ int main()
     formatOutput.Open();
     formatOutput.Close();
 
+    MiaoAVLoader miaoavloader((char *)"c://b");
+    
+    
+
     printf("Test!!!\n");
+
+	system("pause");
+
     return 0;
 }

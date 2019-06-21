@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+class MiaoFormatIO;
+class MiaoFormatOutput;
+class MiaoFormatInput;
+class MiaoVideoFrameHead;
+class MiaoAVLoader;
+
 // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 typedef struct MiaoVideoFrameHead
@@ -47,6 +53,17 @@ public:
     ~MiaoFormatInput();
 
     int ReadFrame(unsigned char * * frameData, int * frameDataLen, int * pts, int * dts, int * frameType);
+};
+
+class MiaoAVLoader
+{
+private:
+    char * filePath = NULL;
+public:
+    MiaoAVLoader(char * filePath);
+    ~MiaoAVLoader();
+
+    int ReadFrame();
 };
 
 #endif

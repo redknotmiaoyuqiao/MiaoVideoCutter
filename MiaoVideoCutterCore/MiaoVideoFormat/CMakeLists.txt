@@ -6,6 +6,7 @@ add_library(
     MiaoFormatOutput.cpp 
     MiaoFormatInput.cpp
     MiaoFormatIO.cpp
+    MiaoAVLoader.cpp
 )
 
-# target_link_libraries(Test pthread)
+target_link_libraries(MiaoVideoFormat Miao)
