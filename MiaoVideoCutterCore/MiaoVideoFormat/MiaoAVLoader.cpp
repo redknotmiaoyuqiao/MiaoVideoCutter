@@ -47,7 +47,7 @@ int MiaoAVLoader::GetStreamsNum()
     return this->pFormatCtx->nb_streams;
 }
 
-int MiaoAVLoader::GetExtradata(int streamIndex)
+int MiaoAVLoader::GetExtradata(int streamIndex, unsigned char * * data, int * dataLen)
 {
     AVStream * avstream = pFormatCtx->streams[streamIndex];
     int type, codec;
@@ -58,11 +58,20 @@ int MiaoAVLoader::GetExtradata(int streamIndex)
 	
 	MiaoExtradata * miao = MiaoExtradataFactory::GetMiaoExtradata(type, codec);
 	if (miao != NULL) {
-		ret = miao->GetExtradata(avstream->codec->extradata, avstream->codec->extradata_size, NULL, NULL);
+		unsigned char * extradata = NULL;
+		int extradataLen;
+
+		ret = miao->GetExtradata(avstream->codec->extradata, avstream->codec->extradata_size, &extradata, &extradataLen);
+
+		*data = extradata;
+		*dataLen = extradataLen;
+
 		delete miao;
+
+		return 0;
 	}
 
-    return ret;
+    return -1;
 }
 
 int MiaoAVLoader::GetStreamsTypeCodec(int streamIndex, int * type, int * codec)
@@ -87,7 +96,7 @@ int MiaoAVLoader::GetStreamsTypeCodec(int streamIndex, int * type, int * codec)
     return 0;
 }
 
-int MiaoAVLoader::ReadFrame()
+int MiaoAVLoader::ReadFrame(unsigned char * * data, int * dataLen)
 {
     AVPacket pkt = {0};
     int ret = av_read_frame(pFormatCtx,&pkt);

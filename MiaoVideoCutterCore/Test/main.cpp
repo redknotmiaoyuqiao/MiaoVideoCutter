@@ -11,12 +11,28 @@ int main()
     printf("Stream Num : %d\n", streamNum);
 
     for(int i=0;i<streamNum;i++){
-        miaoavloader->GetExtradata(i);
+		unsigned char * data = NULL;
+		int dataLen;
+        int ret = miaoavloader->GetExtradata(i, &data, &dataLen);
+
+		if (ret) {
+			continue;
+		}
+
+		printf("Data Len : %d\n", dataLen);
+		for (int j = 0; j < dataLen;j++) {
+			printf(" %d ", data[j]);
+		}
+		printf("\n");
+
+		free(data);
     }
 
     
     while(1){
-        int ret = miaoavloader->ReadFrame();
+		unsigned char * data = NULL;
+		int dataLen;
+        int ret = miaoavloader->ReadFrame(&data, &dataLen);
         if(ret){
             break;
         }

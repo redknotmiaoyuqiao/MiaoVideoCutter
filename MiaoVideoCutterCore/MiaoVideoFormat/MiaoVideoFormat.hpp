@@ -82,9 +82,9 @@ public:
     int Open();
     int GetStreamsNum();
     int GetStreamsTypeCodec(int streamIndex, int * type, int * codec);
-    int GetExtradata(int streamIndex);
+    int GetExtradata(int streamIndex, unsigned char * * data, int * dataLen);
     
-    int ReadFrame();
+    int ReadFrame(unsigned char * * data, int * dataLen);
 
 	int Close();
 };
