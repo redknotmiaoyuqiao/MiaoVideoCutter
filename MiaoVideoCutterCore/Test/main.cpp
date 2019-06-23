@@ -1,9 +1,14 @@
 #include <stdio.h>
 
 #include <MiaoVideoFormat/MiaoVideoFormat.hpp>
+#include <windows.h>
+
+FILE * fd = NULL;
 
 int main()
 {
+	fd = fopen("c://Temp/miaocutter.h264", "wb");
+
     MiaoAVLoader * miaoavloader = new MiaoAVLoader((char *)"C://Temp/demo.mp4");
     miaoavloader->Open();
 
@@ -25,6 +30,8 @@ int main()
 		}
 		printf("\n");
 
+		fwrite(data, dataLen, 1, fd);
+
 		free(data);
     }
 
@@ -33,6 +40,19 @@ int main()
 		unsigned char * data = NULL;
 		int dataLen;
         int ret = miaoavloader->ReadFrame(&data, &dataLen);
+
+		if (data != NULL) {
+			for (int i = 0; i < 5;i++) {
+				printf(" %d ", data[i]);
+			}
+			printf("\n");
+
+			fwrite(data, dataLen, 1, fd);
+
+			free(data);
+		}
+
+
         if(ret){
             break;
         }
@@ -42,6 +62,9 @@ int main()
 	delete miaoavloader;
 
     printf("Test!!!\n");
+
+
+	fclose(fd);
 
 	system("pause");
 

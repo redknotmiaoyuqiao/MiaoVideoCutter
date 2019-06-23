@@ -96,7 +96,7 @@ int MiaoAVLoader::GetStreamsTypeCodec(int streamIndex, int * type, int * codec)
     return 0;
 }
 
-int MiaoAVLoader::ReadFrame(unsigned char * * data, int * dataLen)
+int MiaoAVLoader::ReadFrame(unsigned char * * _data, int * _dataLen)
 {
     AVPacket pkt = {0};
     int ret = av_read_frame(pFormatCtx,&pkt);
@@ -106,10 +106,18 @@ int MiaoAVLoader::ReadFrame(unsigned char * * data, int * dataLen)
         int streamIndex = pkt.stream_index;
     
         if(pFormatCtx->streams[streamIndex]->codec->codec_type == AVMEDIA_TYPE_VIDEO) {
-            // printf("Stream Index : %d\n", streamIndex);
-            // printf("Pts : %ld\n",pts);
             uint8_t * data = pkt.data;
             int data_len = pkt.size;
+
+			unsigned char * dataOut = (unsigned char *)malloc(data_len * sizeof(char));
+			memcpy(dataOut, data, data_len);
+			// H.264
+			dataOut[0] = 0;
+			dataOut[1] = 0;
+			dataOut[2] = 0;
+			dataOut[3] = 1;
+			*_dataLen = data_len;
+			*_data = dataOut;
         }
     }
 
