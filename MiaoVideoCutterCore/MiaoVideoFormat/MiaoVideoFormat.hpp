@@ -21,6 +21,7 @@ class MiaoFormatOutput;
 class MiaoFormatInput;
 class MiaoVideoFrameHead;
 class MiaoAVLoader;
+class MiaoVideoFragment;
 
 // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -34,6 +35,23 @@ typedef struct MiaoVideoFrameHead
 } MiaoVideoFileHead;
 
 // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+class MiaoVideoFragment
+{
+private:
+    char * videoPath = NULL;
+public:
+    MiaoVideoFragment(char * videoPath);
+    ~MiaoVideoFragment();
+
+    int Open();
+    int Close();
+
+    int GetStreamCount();
+    int GetStreamType(int streamIndex);
+
+    int GetFrameCount(int streamIndex);
+};
 
 class MiaoFormatIO
 {

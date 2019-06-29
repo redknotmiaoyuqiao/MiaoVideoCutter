@@ -11,6 +11,7 @@ add_library(
 	MiaoExtradata.cpp
 	MiaoExtradataFactory.cpp
 	H264Extradata.cpp
+    MiaoVideoFragment.cpp
 )
 
 target_link_libraries(MiaoVideoFormat Miao)
