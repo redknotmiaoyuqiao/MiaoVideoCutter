@@ -4,6 +4,7 @@
 #define STREAM_TYPE_VIDEO 0x1
 #define STREAM_TYPE_AUDIO 0x2
 #define STREAM_TYPE_OTHER 0x0
+#define STREAM_TYPE_UNKNOW -0x01
 
 #define STREAM_CODEC_H264 0x1
 #define STREAM_CODEC_UNKNOW 0x0
@@ -14,6 +15,7 @@
 
 extern "C" {
     #include <libavformat/avformat.h>
+    #include <libavcodec/avcodec.h>
 }
 
 class MiaoFormatIO;
@@ -40,6 +42,7 @@ class MiaoVideoFragment
 {
 private:
     char * videoPath = NULL;
+    AVFormatContext * pFormatCtx = NULL;
 public:
     MiaoVideoFragment(char * videoPath);
     ~MiaoVideoFragment();
@@ -49,8 +52,12 @@ public:
 
     int GetStreamCount();
     int GetStreamType(int streamIndex);
-
     int GetFrameCount(int streamIndex);
+    
+    int GetFrameData(int streamIndex, int frameIndex);
+
+    int GetFrameYUV(int streamIndex, double time, int * width, int * height, unsigned char * * yuvData, int * yuvDataLen);
+    double GetStreamDuration(int streamIndex);
 };
 
 class MiaoFormatIO

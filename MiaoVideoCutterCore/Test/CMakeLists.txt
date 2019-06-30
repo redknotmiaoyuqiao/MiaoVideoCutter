@@ -7,4 +7,10 @@ add_executable(
     main.cpp   
 )
 
+add_executable(
+    VideoFragment
+    VideoFragment.cpp
+)
+
 target_link_libraries(Test MiaoVideoFormat)
+target_link_libraries(VideoFragment MiaoVideoFormat)
