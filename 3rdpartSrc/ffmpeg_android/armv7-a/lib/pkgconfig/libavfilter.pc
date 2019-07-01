@@ -1,0 +1,14 @@
+prefix=/home/redknot/ffmpeg-4.1.3/android/armv7-a
+exec_prefix=${prefix}
+libdir=/home/redknot/ffmpeg-4.1.3/android/armv7-a/lib
+includedir=/home/redknot/ffmpeg-4.1.3/android/armv7-a/include
+
+Name: libavfilter
+Description: FFmpeg audio/video filtering library
+Version: 7.40.101
+Requires: 
+Requires.private: libswscale >= 5.3.100, libavformat >= 58.20.100, libavcodec >= 58.35.100, libswresample >= 3.3.100, libavutil >= 56.22.100
+Conflicts:
+Libs: -L${libdir}  -lavfilter 
+Libs.private: -pthread -lm
+Cflags: -I${includedir}
