@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">MiaoVideoCutter</string>
+    <string name="app_name">喵呜剪辑</string>
+    <string name="menu_btn_filter">加滤镜</string>
 </resources>
