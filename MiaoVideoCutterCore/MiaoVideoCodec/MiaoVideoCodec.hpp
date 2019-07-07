@@ -1,6 +1,8 @@
 #ifndef	MIAO_VIDEO_CUTTER_CORE_CODEC
 #define	MIAO_VIDEO_CUTTER_CORE_CODEC
 
+#include <stdio.h>
+
 extern "C" {
     #include <libavformat/avformat.h>
     #include <libavcodec/avcodec.h>

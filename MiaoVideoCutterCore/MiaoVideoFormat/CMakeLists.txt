@@ -16,5 +16,6 @@ add_library(
 
 target_link_libraries(MiaoVideoFormat Miao)
 target_link_libraries(MiaoVideoFormat MiaoVideoCodec)
-target_link_libraries(MiaoVideoFormat ${FFMPEG_LIB_AVFORMAT})
+
 target_link_libraries(MiaoVideoFormat ${FFMPEG_LIB_AVCODEC})
+target_link_libraries(MiaoVideoFormat ${FFMPEG_LIB_AVFORMAT})

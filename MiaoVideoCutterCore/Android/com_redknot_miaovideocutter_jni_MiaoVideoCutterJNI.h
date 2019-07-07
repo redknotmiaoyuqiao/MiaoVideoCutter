@@ -15,6 +15,46 @@ extern "C" {
 JNIEXPORT jstring JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_get_1core_1version
   (JNIEnv *, jclass);
 
+/*
+ * Class:     com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI
+ * Method:    video_format_session_init
+ * Signature: (Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_video_1format_1session_1init
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI
+ * Method:    video_format_session_uninit
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_video_1format_1session_1uninit
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI
+ * Method:    video_format_session_GetStreamCount
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_video_1format_1session_1GetStreamCount
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI
+ * Method:    video_format_session_GetStreamType
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_video_1format_1session_1GetStreamType
+  (JNIEnv *, jclass, jlong, jint);
+
+/*
+ * Class:     com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI
+ * Method:    video_format_session_GetFrameCount
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_video_1format_1session_1GetFrameCount
+  (JNIEnv *, jclass, jlong);
+
 #ifdef __cplusplus
 }
 #endif
