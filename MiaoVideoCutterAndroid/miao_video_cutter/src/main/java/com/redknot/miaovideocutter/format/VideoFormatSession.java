@@ -7,8 +7,6 @@ import com.redknot.miaovideocutter.jni.MiaoVideoCutterJNI;
 
 public class VideoFormatSession {
 
-
-
     private long video_format_session_id = -1;
 
     public VideoFormatSession(String videoPath){
