@@ -57,3 +57,9 @@ JNIEXPORT jint JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_v
 {
     return 0;
 }
+
+JNIEXPORT jint JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_video_1format_1session_1GetStreamDuration
+(JNIEnv *, jclass, jlong, jint)
+{
+    return 0;
+}
