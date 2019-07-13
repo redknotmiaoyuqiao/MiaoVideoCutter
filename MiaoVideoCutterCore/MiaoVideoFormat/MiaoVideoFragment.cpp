@@ -1,5 +1,6 @@
 #include "MiaoVideoFormat.hpp"
 #include "MiaoBase/Miao.hpp"
+#include "MiaoVideoCodec/MiaoVideoCodec.hpp"
 
 MiaoVideoFragment::MiaoVideoFragment(char * videoPath)
 {
@@ -26,7 +27,7 @@ int MiaoVideoFragment::Open()
     }
 
     avformat_find_stream_info(pFormatCtx,0);
-    // av_dump_format(pFormatCtx, 0, this->videoPath, 0);
+    av_dump_format(pFormatCtx, 0, this->videoPath, 0);
 
     return 0;
 }
@@ -132,7 +133,7 @@ double MiaoVideoFragment::GetStreamDuration(int streamIndex)
     return stream->duration * av_q2d(stream->time_base);
 }
 
-int MiaoVideoFragment::GetFrameYUV(int streamIndex, double time, int * width, int * height, unsigned char * * yuvData, int * yuvDataLen)
+int MiaoVideoFragment::GetFrameYUV(int streamIndex, double targetTime, int * width, int * height, unsigned char * * yuvData, int * yuvDataLen)
 {
     if(this->pFormatCtx == NULL) {
         return -1;
@@ -144,11 +145,17 @@ int MiaoVideoFragment::GetFrameYUV(int streamIndex, double time, int * width, in
         return -1;
     }
 
+    if(GetStreamType(streamIndex) != STREAM_TYPE_VIDEO){
+        return -1;
+    }
+
     AVStream * stream = this->pFormatCtx->streams[streamIndex];
 
     AVPacket * pkt = av_packet_alloc();
 
-    int64_t k = (int64_t) (time / av_q2d(stream->time_base)) + stream->start_time;
+    MiaoVideoCodec videoCodec;
+
+    int64_t k = (int64_t) (targetTime / av_q2d(stream->time_base)) + stream->start_time;
     av_seek_frame(pFormatCtx, streamIndex, k, AVSEEK_FLAG_BACKWARD);
     while(1){
         int ret = av_read_frame(pFormatCtx, pkt);
@@ -156,7 +163,16 @@ int MiaoVideoFragment::GetFrameYUV(int streamIndex, double time, int * width, in
             goto END;
         }
         if(pkt->stream_index == streamIndex){
-            printf("PTS:%f\n", pkt->pts * av_q2d(stream->time_base));
+            double time = pkt->pts * av_q2d(stream->time_base);
+            if(time >= targetTime){
+                goto END;
+            }
+            // Decode
+            RedLog("PTS:%f\n", time);
+            videoCodec.DecodeFrameFFmpegSendFrame(stream, pkt);
+            while(videoCodec.DecodeFrameFFmpegRecvFrame(width, height, yuvData, yuvDataLen) == 0){
+
+            }
         }
     }
 

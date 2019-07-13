@@ -13,3 +13,6 @@ add_library(
 
 target_link_libraries(MiaoVideoAndroid Miao)
 target_link_libraries(MiaoVideoAndroid MiaoVideoFormat)
+
+find_library(log-lib log)
+target_link_libraries(MiaoVideoAndroid ${log-lib})

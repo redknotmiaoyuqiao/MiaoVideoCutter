@@ -61,6 +61,16 @@ public class TimelineView extends RelativeLayout {
         Log.e("MiaoCutter TimeLine", "Audio Stream Index:" + audioStreamIndex);
         logStr += "Audio Stream Index:" + audioStreamIndex + "\n";
 
+        double videoDur = videoFormatSession.getDefVideoStreamDuration();
+        Log.e("MiaoCutter TimeLine", "Video Duration:" + videoDur);
+        logStr += "Video Duration:" + videoDur + "\n";
+
+        double audioDur = videoFormatSession.getDefAudioStreamDuration();
+        Log.e("MiaoCutter TimeLine", "Audio Duration:" + audioDur);
+        logStr += "Audio Duration:" + audioDur + "\n";
+
+
+
         timeline_main_log.setText(logStr);
 
         return 0;

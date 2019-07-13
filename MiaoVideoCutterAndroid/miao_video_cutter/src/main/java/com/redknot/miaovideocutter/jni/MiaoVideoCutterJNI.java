@@ -15,8 +15,8 @@ public class MiaoVideoCutterJNI {
     public static native int        video_format_session_uninit                     (long session_id);
     public static native int        video_format_session_GetStreamCount             (long session_id);
     public static native int        video_format_session_GetStreamType              (long session_id, int stream_index);
+    public static native double     video_format_session_GetStreamDuration          (long session_id, int stream_index);
     public static native int        video_format_session_GetFrameCount              (long session_id);
 
-    public static native int        video_format_session_GetStreamDuration          (long session_id, int stream_index);
-
+    public static native long       video_format_session_GetFrameYUV                (long session_id, int stream_index, double time);
 }

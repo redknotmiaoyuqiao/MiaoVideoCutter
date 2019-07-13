@@ -8,3 +8,6 @@ add_library(
 )
 
 target_link_libraries(MiaoVideoCodec Miao)
+target_link_libraries(MiaoVideoCodec ${FFMPEG_LIB_AVCODEC})
+target_link_libraries(MiaoVideoCodec ${FFMPEG_LIB_AVFORMAT})
+target_link_libraries(MiaoVideoCodec ${FFMPEG_LIB_AVUTIL})

@@ -21,8 +21,11 @@ public:
     ~MiaoVideoCodec();
 
     int InitCodec();
-
     int DecodeFrame(unsigned char * rawData, int rawDataLen, uint64_t pts, uint64_t dts, unsigned char * * yuvData, int * yuvDataLen);
+
+    int DecodeFrameFFmpeg(AVPacket * pkt, unsigned char * * yuvData, int * yuvDataLen);
+    int DecodeFrameFFmpegSendFrame(AVStream * stream, AVPacket * pkt);
+    int DecodeFrameFFmpegRecvFrame(int * width, int * height, unsigned char * * yuvData, int * yuvDataLen);
 };
 
 #endif

@@ -47,17 +47,17 @@ public:
     MiaoVideoFragment(char * videoPath);
     ~MiaoVideoFragment();
 
-    int Open();
-    int Close();
+    int             Open();
+    int             Close();
 
-    int GetStreamCount();
-    int GetStreamType(int streamIndex);
-    int GetFrameCount(int streamIndex);
+    int             GetStreamCount();
+    int             GetStreamType(int streamIndex);
+    int             GetFrameCount(int streamIndex);
+    double          GetStreamDuration(int streamIndex);
     
-    int GetFrameData(int streamIndex, int frameIndex);
+    int             GetFrameData(int streamIndex, int frameIndex);
 
-    int GetFrameYUV(int streamIndex, double time, int * width, int * height, unsigned char * * yuvData, int * yuvDataLen);
-    double GetStreamDuration(int streamIndex);
+    int             GetFrameYUV(int streamIndex, double time, int * width, int * height, unsigned char * * yuvData, int * yuvDataLen);
 };
 
 class MiaoFormatIO

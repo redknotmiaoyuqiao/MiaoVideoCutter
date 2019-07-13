@@ -46,4 +46,19 @@ public class VideoFormatSession {
         }
         return -1;
     }
+
+    public double getStreamDuration(int streamIndex){
+        return MiaoVideoCutterJNI.video_format_session_GetStreamDuration(video_format_session_id, streamIndex);
+    }
+
+    public double getDefVideoStreamDuration()
+    {
+        MiaoVideoCutterJNI.video_format_session_GetFrameYUV(video_format_session_id, getVideoStreamIndex(), 3.0);
+        return getStreamDuration(getVideoStreamIndex());
+    }
+
+    public double getDefAudioStreamDuration()
+    {
+        return getStreamDuration(getAudioStreamIndex());
+    }
 }

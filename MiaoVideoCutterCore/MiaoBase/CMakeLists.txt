@@ -4,4 +4,5 @@ include_directories (../)
 add_library(
     Miao
     Miao.cpp
+    MiaoDebug.cpp
 )

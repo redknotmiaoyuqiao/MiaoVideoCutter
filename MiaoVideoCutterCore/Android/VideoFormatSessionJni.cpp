@@ -1,6 +1,7 @@
 #include "com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI.h"
 #include "JniUtil.hpp"
 #include "MiaoVideoFormat/MiaoVideoFormat.hpp"
+#include "MiaoBase/MiaoDebug.hpp"
 
 JNIEXPORT jlong JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_video_1format_1session_1init
 (JNIEnv * env, jclass, jstring videoPath)
@@ -58,8 +59,34 @@ JNIEXPORT jint JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_v
     return 0;
 }
 
-JNIEXPORT jint JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_video_1format_1session_1GetStreamDuration
-(JNIEnv *, jclass, jlong, jint)
+
+JNIEXPORT jdouble JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_video_1format_1session_1GetStreamDuration
+(JNIEnv *, jclass, jlong _miaoVideoFragment, jint stream_index)
 {
-    return 0;
+    MiaoVideoFragment * miaoVideoFragment = (MiaoVideoFragment *)_miaoVideoFragment;
+    if(miaoVideoFragment == NULL){
+        return -1;
+    }
+
+    return miaoVideoFragment->GetStreamDuration(stream_index);
+}
+
+
+JNIEXPORT jlong JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_video_1format_1session_1GetFrameYUV
+(JNIEnv *, jclass, jlong _miaoVideoFragment, jint stream_index, jdouble time)
+{
+    MiaoVideoFragment * miaoVideoFragment = (MiaoVideoFragment *)_miaoVideoFragment;
+    if(miaoVideoFragment == NULL){
+        return -1;
+    }
+
+    int width = 0;
+    int height = 0;
+    unsigned char * yuvData = NULL;
+    int yuvDataLen = 0;
+    int ret = miaoVideoFragment->GetFrameYUV(stream_index, time, &width, &height, &yuvData, &yuvDataLen);
+
+    RedLog("Width:%d\n", width);
+
+    return 1L;
 }

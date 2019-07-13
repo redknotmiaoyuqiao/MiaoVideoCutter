@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include "MiaoDebug.hpp"
 
 #ifdef	__cplusplus
 extern	"C" {
