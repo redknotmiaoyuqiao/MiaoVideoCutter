@@ -9,6 +9,28 @@ extern "C" {
 }
 
 class MiaoVideoCodec;
+class MiaoVideoDecoder;
+
+class MiaoCodecCtx
+{
+
+};
+
+class MiaoVideoDecoder
+{
+private:
+    AVCodecContext * codecCtx = NULL;
+    AVCodec * videoCodec = NULL;
+    AVFrame * pFrame = NULL;
+public:
+    MiaoVideoDecoder();
+    ~MiaoVideoDecoder();
+
+    int DecodeSendFrame(AVStream * stream, AVPacket * pkt);
+    int DecodeRecvFrame(int * width, int * height, unsigned char * * yuvData, int * yuvDataLen);
+};
+
+
 
 class MiaoVideoCodec
 {
@@ -20,7 +42,8 @@ public:
     MiaoVideoCodec();
     ~MiaoVideoCodec();
 
-    int InitCodec();
+
+
     int DecodeFrame(unsigned char * rawData, int rawDataLen, uint64_t pts, uint64_t dts, unsigned char * * yuvData, int * yuvDataLen);
 
     int DecodeFrameFFmpeg(AVPacket * pkt, unsigned char * * yuvData, int * yuvDataLen);

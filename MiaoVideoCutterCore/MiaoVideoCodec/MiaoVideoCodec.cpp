@@ -13,12 +13,6 @@ MiaoVideoCodec::~MiaoVideoCodec()
     // TODO 释放资源
 }
 
-int MiaoVideoCodec::InitCodec()
-{
-    avcodec_open2(codecCtx, videoCodec, NULL);
-    return 0;
-}
-
 int MiaoVideoCodec::DecodeFrame(unsigned char * rawData, int rawDataLen, uint64_t pts, uint64_t dts, unsigned char * * yuvData, int * yuvDataLen)
 {
     AVPacket packet = {0}; 
@@ -55,10 +49,8 @@ int MiaoVideoCodec::DecodeFrameFFmpeg(AVPacket * pkt, unsigned char * * yuvData,
 int MiaoVideoCodec::DecodeFrameFFmpegSendFrame(AVStream * stream, AVPacket * pkt)
 {
     if(videoCodec == NULL){
-        avcodec_register_all();
-        av_register_all();
         videoCodec = avcodec_find_decoder(stream->codec->codec_id);
-        codecCtx = avcodec_alloc_context3(videoCodec);
+        codecCtx = stream->codec;
         int ret = avcodec_open2(codecCtx, videoCodec, NULL);
         RedLog("avcodec_open2 ret: %d\n", ret);
     }
@@ -70,7 +62,7 @@ int MiaoVideoCodec::DecodeFrameFFmpegSendFrame(AVStream * stream, AVPacket * pkt
 int MiaoVideoCodec::DecodeFrameFFmpegRecvFrame(int * width, int * height, unsigned char * * yuvData, int * yuvDataLen)
 {
     int ret = avcodec_receive_frame(codecCtx, pFrame);
-    RedLog("avcodec_receive_frame ret:%d\n",ret);
+    //// RedLog("avcodec_receive_frame ret:%d\n",ret);
     if(ret == 0){
         *width = pFrame->width;
         *height = pFrame->height;

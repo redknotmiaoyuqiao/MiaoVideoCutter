@@ -52,6 +52,26 @@ int MiaoVideoFragment::GetStreamCount()
     return this->pFormatCtx->nb_streams;
 }
 
+int MiaoVideoFragment::GetVideoStreamInfo(int streamIndex, int * width, int * height)
+{
+    if(this->pFormatCtx == NULL) {
+        return -1;
+    }
+    if(streamIndex >= this->pFormatCtx->nb_streams) {
+        return -1;
+    }
+    if(streamIndex < 0){
+        return -1;
+    }
+
+    AVStream * stream = this->pFormatCtx->streams[streamIndex];
+
+    *width  = stream->codec->width;
+    *height = stream->codec->height;
+
+    return 0;
+}
+
 int MiaoVideoFragment::GetStreamType(int streamIndex)
 {
     if(this->pFormatCtx == NULL) {
@@ -133,7 +153,7 @@ double MiaoVideoFragment::GetStreamDuration(int streamIndex)
     return stream->duration * av_q2d(stream->time_base);
 }
 
-int MiaoVideoFragment::GetFrameYUV(int streamIndex, double targetTime, int * width, int * height, unsigned char * * yuvData, int * yuvDataLen)
+int MiaoVideoFragment::GetFrameYUV(int streamIndex, double targetTime, int * width, int * height, unsigned char * * _yuvData, int * _yuvDataLen)
 {
     if(this->pFormatCtx == NULL) {
         return -1;
@@ -153,10 +173,14 @@ int MiaoVideoFragment::GetFrameYUV(int streamIndex, double targetTime, int * wid
 
     AVPacket * pkt = av_packet_alloc();
 
-    MiaoVideoCodec videoCodec;
+    MiaoVideoDecoder videoDecoder;
 
     int64_t k = (int64_t) (targetTime / av_q2d(stream->time_base)) + stream->start_time;
     av_seek_frame(pFormatCtx, streamIndex, k, AVSEEK_FLAG_BACKWARD);
+
+    unsigned char * yuvData = NULL;
+    int yuvDataLen = 0;
+
     while(1){
         int ret = av_read_frame(pFormatCtx, pkt);
         if(ret != 0){
@@ -165,13 +189,18 @@ int MiaoVideoFragment::GetFrameYUV(int streamIndex, double targetTime, int * wid
         if(pkt->stream_index == streamIndex){
             double time = pkt->pts * av_q2d(stream->time_base);
             if(time >= targetTime){
+                *_yuvData = yuvData;
+                *_yuvDataLen = yuvDataLen;
                 goto END;
             }
-            // Decode
-            RedLog("PTS:%f\n", time);
-            videoCodec.DecodeFrameFFmpegSendFrame(stream, pkt);
-            while(videoCodec.DecodeFrameFFmpegRecvFrame(width, height, yuvData, yuvDataLen) == 0){
-
+            videoDecoder.DecodeSendFrame(stream, pkt);
+            
+            if(yuvData != NULL){
+                free(yuvData);
+                yuvData = NULL;
+            }
+            int ret = videoDecoder.DecodeRecvFrame(width, height, &yuvData, &yuvDataLen);
+            if(ret){
             }
         }
     }

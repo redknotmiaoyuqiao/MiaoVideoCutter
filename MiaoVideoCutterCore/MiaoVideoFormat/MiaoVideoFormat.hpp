@@ -52,10 +52,12 @@ public:
 
     int             GetStreamCount();
     int             GetStreamType(int streamIndex);
-    int             GetFrameCount(int streamIndex);
+
     double          GetStreamDuration(int streamIndex);
+    int             GetVideoStreamInfo(int streamIndex, int * width, int * height);
     
     int             GetFrameData(int streamIndex, int frameIndex);
+    int             GetFrameCount(int streamIndex);
 
     int             GetFrameYUV(int streamIndex, double time, int * width, int * height, unsigned char * * yuvData, int * yuvDataLen);
 };

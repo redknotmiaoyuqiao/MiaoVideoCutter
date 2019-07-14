@@ -5,6 +5,7 @@ include_directories (${FFMPEG_INC_DIR})
 add_library(
     MiaoVideoCodec
     MiaoVideoCodec.cpp
+    MiaoVideoDecoder.cpp
 )
 
 target_link_libraries(MiaoVideoCodec Miao)

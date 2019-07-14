@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.redknot.miaovideocutter.jni.MiaoVideoCutterJNI;
 import com.redknot.miaovideocutter.view.TimelineView;
 
 public class FilterActivity extends AppCompatActivity {
@@ -16,7 +17,9 @@ public class FilterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
 
-        String path = Environment.getExternalStorageDirectory() + "/demo.mp4";
+        String path = Environment.getExternalStorageDirectory() + "/dudu.mp4";
+
+
         filter_timeline_view = findViewById(R.id.filter_timeline_view);
         int ret = filter_timeline_view.loadVideo(path);
         if(ret < 0){
