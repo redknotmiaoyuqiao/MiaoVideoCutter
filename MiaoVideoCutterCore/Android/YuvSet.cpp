@@ -12,10 +12,6 @@ YuvSet::YuvSet(int width, int height, int type, unsigned char * data, int dataLe
     this->data      = (unsigned char *)malloc(this->dataLen * sizeof(unsigned char));
 
     memcpy(data, this->data, dataLen);
-
-    for(int i=0;i<10;i++){
-        RedLog("%d\n", this->data[i]);
-    }
 }
 
 YuvSet::~YuvSet()

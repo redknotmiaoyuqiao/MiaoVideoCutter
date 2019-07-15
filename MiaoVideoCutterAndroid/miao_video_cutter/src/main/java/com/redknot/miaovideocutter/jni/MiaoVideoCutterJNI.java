@@ -1,5 +1,7 @@
 package com.redknot.miaovideocutter.jni;
 
+import android.graphics.Bitmap;
+
 public class MiaoVideoCutterJNI {
     static {
         System.loadLibrary("MiaoVideoAndroid");
@@ -23,8 +25,6 @@ public class MiaoVideoCutterJNI {
     public static native int        video_format_session_GetFrameCount              (long session_id);
 
     public static native long       video_format_session_GetFrameYUV                (long session_id, int stream_index, double time);
-    public static native byte[]     video_format_session_GetYuvFrame                (long yuv_set_id);
-    public static native byte[]     video_format_session_GetYuvFrameScale           (long yuv_set_id, int targetWidth, int targetHeight);
-    public static native byte[]     video_format_session_GetRGB565Frame             (long yuv_set_id, int targetWidth, int targetHeight);
+    public static native int[]      video_format_session_GetRGBA8888                (long yuv_set_id);
     public static native int        video_format_session_YuvUninit                  (long yuv_set_id);
 }

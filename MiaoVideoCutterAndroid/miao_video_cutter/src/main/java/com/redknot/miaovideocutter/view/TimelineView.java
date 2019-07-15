@@ -94,26 +94,26 @@ public class TimelineView extends RelativeLayout {
         logStr += "Width:" + width + "\n";
         logStr += "Height:" + height + "\n";
 
-        int targetWidth = 360;
-        int targetHeight = 640;
+        int targetWidth = width;
+        int targetHeight = height;
 
         timeline_main_log.setText(logStr);
 
-        new Thread(new TTT(videoFormatSession, timeInterval)).start();
+        // new Thread(new TTT(videoFormatSession, timeInterval)).start();
 
         int snapshotCount = (int)(videoDur / timeInterval);
+        Log.e("YUV Frame", "Snapshot Count:" + snapshotCount);
+
 
         for(int i=0;i<snapshotCount;i++){
-            // byte[] yuvFrame = videoFormatSession.getYuvFrame(i * timeInterval);
+            int[] rgba8888 = videoFormatSession.getRGBA8888Frame(i * timeInterval);
+            Log.e("YUV Frame", "yuvFrame:" + rgba8888.length);
+            Log.e("YUV Frame", "yuvFrame:" + i);
 
             ImageView snapshotImage = new ImageView(this.context);
 
-            Bitmap bmp = Bitmap.createBitmap(targetWidth,targetHeight, Bitmap.Config.RGB_565);
-            Canvas canvas = new Canvas(bmp);
-            Paint p = new Paint();
-            p.setColor(Color.WHITE);
-            canvas.drawLine(0.0f,0.0f,targetWidth,targetHeight, p);
-            canvas.drawLine(targetWidth,0.0f,0.0f,targetHeight, p);
+            Bitmap bmp = Bitmap.createBitmap(targetWidth,targetHeight, Bitmap.Config.ARGB_8888);
+            bmp.setPixels(rgba8888, 0, targetWidth, 0,0, targetWidth, targetHeight);
 
             snapshotImage.setImageBitmap(bmp);
 
@@ -142,7 +142,9 @@ public class TimelineView extends RelativeLayout {
             int snapshotCount = (int)(15.3 / timeInterval);
 
             for(int i=0;i<snapshotCount;i++){
-                byte[] yuvFrame = videoFormatSession.getYuvFrame(i * timeInterval);
+                //
+                // byte[] yuvFrame = videoFormatSession.getYuvFrame(i * timeInterval);
+                // Log.e("YUV Frame", "yuvFrame:" + yuvFrame.length);
             }
         }
     }

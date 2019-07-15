@@ -7,7 +7,19 @@ MiaoVideoDecoder::MiaoVideoDecoder()
 
 MiaoVideoDecoder::~MiaoVideoDecoder()
 {
+    if(codecCtx != NULL){
+        // avcodec_close(codecCtx);
+    }
 
+    if(pFrame != NULL){
+        av_frame_free(&pFrame);
+        pFrame = NULL;
+    }
+
+    if(videoCodec != NULL){
+        avcodec_free_context(&codecCtx);
+        videoCodec = NULL;
+    }
 }
 
 int MiaoVideoDecoder::DecodeSendFrame(AVStream * stream, AVPacket * pkt)
