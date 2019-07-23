@@ -166,7 +166,12 @@ JNIEXPORT void JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_v
         if (pkt->stream_index == st_idx) {
             RedLog("PTS:%lld\n", pkt->pts);
             RedLog("DTS:%lld\n", pkt->dts);
+            int ret = avcodec_send_packet(cc, pkt);
+            RedLog("Ret:%d\n",ret);
+            ret = avcodec_receive_frame(cc, frame);
+            RedLog("Ret:%d\n",ret);
 
+            /*
             int ret = avcodec_decode_video2(cc, frame, &got_pict, pkt);
             RedLog("Ret:%d\n",ret);
             if (ret >= 0) {
@@ -175,6 +180,7 @@ JNIEXPORT void JNICALL Java_com_redknot_miaovideocutter_jni_MiaoVideoCutterJNI_v
                     RedLog("Decode Success\n");
                 }
             }
+            */
         }
     }
     free(videoPathStr);

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.redknot.miaovideocutter.R;
 import com.redknot.miaovideocutter.format.VideoFormatSession;
+import com.redknot.miaovideocutter.jni.MiaoVideoCutterJNI;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -65,6 +66,8 @@ public class TimelineView extends RelativeLayout {
         if(!videoFile.exists()){
             return -1;
         }
+
+        // MiaoVideoCutterJNI.video_format_session_demo(videoPath);
 
         VideoFormatSession videoFormatSession = new VideoFormatSession(videoPath);
         int streamCount = videoFormatSession.getStreamCount();

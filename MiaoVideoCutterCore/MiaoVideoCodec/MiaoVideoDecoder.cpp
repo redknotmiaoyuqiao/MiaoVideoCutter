@@ -17,8 +17,8 @@ MiaoVideoDecoder::~MiaoVideoDecoder()
     }
 
     if(videoCodec != NULL){
-        avcodec_free_context(&codecCtx);
-        videoCodec = NULL;
+        // avcodec_free_context(&codecCtx);
+        // videoCodec = NULL;
     }
 }
 
@@ -33,7 +33,7 @@ int MiaoVideoDecoder::DecodeSendFrame(AVStream * stream, AVPacket * pkt)
     return ret;
 }
 
-int MiaoVideoDecoder::DecodeRecvFrame(int * _width, int * _height, unsigned char * * _yuvData, int * _yuvDataLen)
+int MiaoVideoDecoder:: DecodeRecvFrame(int * _width, int * _height, unsigned char * * _yuvData, int * _yuvDataLen)
 {
     int ret = avcodec_receive_frame(codecCtx, pFrame);
     if(ret == 0){

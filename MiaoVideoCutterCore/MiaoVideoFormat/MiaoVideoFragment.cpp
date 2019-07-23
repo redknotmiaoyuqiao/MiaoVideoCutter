@@ -94,6 +94,7 @@ int MiaoVideoFragment::GetStreamType(int streamIndex)
     else {
         return STREAM_TYPE_OTHER;
     }
+
     return STREAM_TYPE_UNKNOW;
 }
 
@@ -159,14 +160,14 @@ int MiaoVideoFragment::GetFrameYUV(int streamIndex, double targetTime, int * wid
         return -1;
     }
     if(streamIndex >= this->pFormatCtx->nb_streams) {
-        return -1;
+        return -2;
     }
     if(streamIndex < 0){
-        return -1;
+        return -3;
     }
 
     if(GetStreamType(streamIndex) != STREAM_TYPE_VIDEO){
-        return -1;
+        return -4;
     }
 
     AVStream * stream = this->pFormatCtx->streams[streamIndex];
@@ -186,22 +187,27 @@ int MiaoVideoFragment::GetFrameYUV(int streamIndex, double targetTime, int * wid
         if(ret != 0){
             goto END;
         }
+
+
         if(pkt->stream_index == streamIndex){
             double time = pkt->pts * av_q2d(stream->time_base);
+
             if(time >= targetTime){
-                *_yuvData = yuvData;
-                *_yuvDataLen = yuvDataLen;
-                goto END;
+                if(yuvData != NULL){
+                    *_yuvData = yuvData;
+                    *_yuvDataLen = yuvDataLen;
+                    goto END;
+                }
             }
-            videoDecoder.DecodeSendFrame(stream, pkt);
+
+            int ret = videoDecoder.DecodeSendFrame(stream, pkt);\
             
             if(yuvData != NULL){
                 free(yuvData);
                 yuvData = NULL;
             }
-            int ret = videoDecoder.DecodeRecvFrame(width, height, &yuvData, &yuvDataLen);
-            if(ret){
-            }
+
+            ret = videoDecoder.DecodeRecvFrame(width, height, &yuvData, &yuvDataLen);
         }
     }
 

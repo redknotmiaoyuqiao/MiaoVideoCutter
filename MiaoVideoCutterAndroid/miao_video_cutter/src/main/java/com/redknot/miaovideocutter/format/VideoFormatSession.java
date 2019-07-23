@@ -11,6 +11,7 @@ public class VideoFormatSession {
 
     public VideoFormatSession(String videoPath)
     {
+
         this.video_format_session_id = MiaoVideoCutterJNI.video_format_session_init(videoPath);
     }
 
@@ -83,7 +84,6 @@ public class VideoFormatSession {
     public int[] getRGBA8888Frame(double time)
     {
         int streamIndex = getVideoStreamIndex();
-
         long yuvSet = MiaoVideoCutterJNI.video_format_session_GetFrameYUV(video_format_session_id, streamIndex, time);
         int[] rgbaData = MiaoVideoCutterJNI.video_format_session_GetRGBA8888(yuvSet);
         int ret = MiaoVideoCutterJNI.video_format_session_YuvUninit(yuvSet);
