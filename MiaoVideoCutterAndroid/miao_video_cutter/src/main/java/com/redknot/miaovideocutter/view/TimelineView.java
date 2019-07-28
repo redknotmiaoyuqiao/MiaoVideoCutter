@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import com.redknot.miaovideocutter.R;
 import com.redknot.miaovideocutter.format.VideoFormatSession;
 import com.redknot.miaovideocutter.jni.MiaoVideoCutterJNI;
+import com.redknot.miaovideocutter.view.adapter.TimelineAdapter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,10 +28,9 @@ import java.util.List;
 
 public class TimelineView extends RelativeLayout {
 
-    private LinearLayout timeline_main_layout = null;
     private TextView timeline_main_log = null;
-    private List<ImageView> snapshotList = null;
-
+    private RecyclerView timeline_main_recycler_view;
+    private TimelineAdapter timelineAdapter;
     private Context context = null;
 
     public TimelineView(Context context) {
@@ -48,10 +50,17 @@ public class TimelineView extends RelativeLayout {
 
     private void init(Context context){
         View inflate = inflate(getContext(), R.layout.miaovideocutter_timeline_view, this);
-        timeline_main_layout = inflate.findViewById(R.id.timeline_main_layout);
         timeline_main_log = inflate.findViewById(R.id.timeline_main_log);
-        snapshotList = new ArrayList<ImageView>();
+        timeline_main_recycler_view = inflate.findViewById(R.id.timeline_main_recycler_view);
         this.context = context;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        Log.e("onMeasure", "width:" + widthMeasureSpec);
+        Log.e("onMeasure", "height:" + heightMeasureSpec);
     }
 
     public int loadVideo(String videoPath){
@@ -66,8 +75,6 @@ public class TimelineView extends RelativeLayout {
         if(!videoFile.exists()){
             return -1;
         }
-
-        // MiaoVideoCutterJNI.video_format_session_demo(videoPath);
 
         VideoFormatSession videoFormatSession = new VideoFormatSession(videoPath);
         int streamCount = videoFormatSession.getStreamCount();
@@ -104,51 +111,18 @@ public class TimelineView extends RelativeLayout {
 
         // new Thread(new TTT(videoFormatSession, timeInterval)).start();
 
-        int snapshotCount = (int)(videoDur / timeInterval);
-        Log.e("YUV Frame", "Snapshot Count:" + snapshotCount);
-
-
-        for(int i=0;i<snapshotCount;i++){
-            int[] rgba8888 = videoFormatSession.getRGBA8888Frame(i * timeInterval);
-            Log.e("YUV Frame", "yuvFrame:" + rgba8888.length);
-            Log.e("YUV Frame", "yuvFrame:" + i);
-
-            ImageView snapshotImage = new ImageView(this.context);
-
-            Bitmap bmp = Bitmap.createBitmap(targetWidth,targetHeight, Bitmap.Config.ARGB_8888);
-            bmp.setPixels(rgba8888, 0, targetWidth, 0,0, targetWidth, targetHeight);
-
-            snapshotImage.setImageBitmap(bmp);
-
-            timeline_main_layout.addView(snapshotImage);
-        }
-
         timeline_main_log.setVisibility(View.GONE);
 
+
+
+        timelineAdapter = new TimelineAdapter(videoFormatSession);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        timeline_main_recycler_view.setLayoutManager(linearLayoutManager);
+        timeline_main_recycler_view.setAdapter(timelineAdapter);
+
         return 0;
-    }
-
-
-    private class TTT implements Runnable
-    {
-        private VideoFormatSession videoFormatSession = null;
-        private double timeInterval;
-
-        public TTT(VideoFormatSession videoFormatSession, double timeInterval)
-        {
-            this.videoFormatSession = videoFormatSession;
-            this.timeInterval = timeInterval;
-        }
-
-        @Override
-        public void run() {
-            int snapshotCount = (int)(15.3 / timeInterval);
-
-            for(int i=0;i<snapshotCount;i++){
-                //
-                // byte[] yuvFrame = videoFormatSession.getYuvFrame(i * timeInterval);
-                // Log.e("YUV Frame", "yuvFrame:" + yuvFrame.length);
-            }
-        }
     }
 }

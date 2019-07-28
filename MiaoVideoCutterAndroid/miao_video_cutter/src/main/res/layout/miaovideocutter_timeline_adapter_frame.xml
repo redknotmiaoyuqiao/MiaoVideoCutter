@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <View
+        android:layout_width="0dip"
+        android:layout_height="80dip" />
+    <ImageView
+        android:scaleType="centerCrop"
+        android:id="@+id/timeline_snapshot_img"
+        android:layout_width="80dip"
+        android:layout_height="80dip" />
+</LinearLayout>

@@ -8,14 +8,9 @@
         android:id="@+id/timeline_main_log"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <HorizontalScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/timeline_main_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/timeline_main_layout"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </LinearLayout>
-    </HorizontalScrollView>
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>
